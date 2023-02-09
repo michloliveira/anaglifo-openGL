@@ -5,7 +5,6 @@
 using namespace std;
 
 void ObjLoader::loadModel(object &Model, const char *filePath){
-    cout << "hello" << endl;
     vector<face> faces;
     vector<vertice> vertices;
     vector<normal> normais;
@@ -19,6 +18,10 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
                 vertice v = getVertice(line);
                 vertices.push_back(v);
             }
+            else if(line.find("vt ") != string::npos){
+                normal n = getNormal(line);
+                normais.push_back(n);
+            }
         }
         
         
@@ -29,6 +32,7 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
     arq.close();
 
     cout << "Quatidade de vertices: " << vertices.size() << endl;
+    cout << "Quatidade de normais: " << normais.size() << endl;
 }
 
 
