@@ -22,6 +22,10 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
                 normal n = getNormal(line);
                 normais.push_back(n);
             }
+            else if(line.find("f ") != string::npos){
+                face f = getFace(line);
+                faces.push_back(f);
+            }
         }
         
         
@@ -33,6 +37,7 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
 
     cout << "Quatidade de vertices: " << vertices.size() << endl;
     cout << "Quatidade de normais: " << normais.size() << endl;
+    cout << "Quatidade de faces: " << faces.size() << endl;
 }
 
 
