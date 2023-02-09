@@ -1,10 +1,34 @@
 #include <iostream>
+#include <fstream>
 #include "ObjLoader.h"
 
 using namespace std;
 
 void ObjLoader::loadModel(object &Model, const char *filePath){
     cout << "hello" << endl;
+    vector<face> faces;
+    vector<vertice> vertices;
+    vector<normal> normais;
+
+    fstream arq(filePath);
+    string line = "";
+
+    if(arq.is_open()){
+        while (getline(arq,line)){
+            if(line.find("v ") != string::npos){
+                vertice v = getVertice(line);
+                vertices.push_back(v);
+            }
+        }
+        
+        
+    }
+    else{
+        cout << "Erro ao abrir modelo" << endl;
+    }
+    arq.close();
+
+    cout << "Quatidade de vertices: " << vertices.size() << endl;
 }
 
 
