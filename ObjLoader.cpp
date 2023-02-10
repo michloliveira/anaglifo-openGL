@@ -5,10 +5,6 @@
 using namespace std;
 
 void ObjLoader::loadModel(object &Model, const char *filePath){
-    vector<face> faces;
-    vector<vertice> vertices;
-    vector<normal> normais;
-
     fstream arq(filePath);
     string line = "";
 
@@ -16,15 +12,16 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
         while (getline(arq,line)){
             if(line.find("v ") != string::npos){
                 vertice v = getVertice(line);
-                vertices.push_back(v);
+                std::cout << v.x << endl;
+                Model.vertices.push_back(v);
             }
-            else if(line.find("vt ") != string::npos){
+            else if(line.find("vn ") != string::npos){
                 normal n = getNormal(line);
-                normais.push_back(n);
+                Model.normais.push_back(n);
             }
             else if(line.find("f ") != string::npos){
                 face f = getFace(line);
-                faces.push_back(f);
+                Model.faces.push_back(f);
             }
         }
         
@@ -35,9 +32,9 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
     }
     arq.close();
 
-    cout << "Quatidade de vertices: " << vertices.size() << endl;
-    cout << "Quatidade de normais: " << normais.size() << endl;
-    cout << "Quatidade de faces: " << faces.size() << endl;
+    cout << "Quatidade de vertices: " << Model.vertices.size() << endl;
+    cout << "Quatidade de normais: " << Model.normais.size() << endl;
+    cout << "Quatidade de faces: " << Model.faces.size() << endl;
 }
 
 

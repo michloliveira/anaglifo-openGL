@@ -42,6 +42,7 @@ struct normal{
 struct object{
     std::vector<face> faces;
     std::vector<vertice> vertices;
+    std::vector<normal> normais;
 };
 
 
