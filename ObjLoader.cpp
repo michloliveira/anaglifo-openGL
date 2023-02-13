@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "ObjLoader.h"
 
 using namespace std;
 
 void ObjLoader::loadModel(object &Model, const char *filePath){
+    cout << setprecision(10);
     fstream arq(filePath);
     string line = "";
 
@@ -12,7 +14,6 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
         while (getline(arq,line)){
             if(line.find("v ") != string::npos){
                 vertice v = getVertice(line);
-                std::cout << v.x << endl;
                 Model.vertices.push_back(v);
             }
             else if(line.find("vn ") != string::npos){
@@ -32,26 +33,25 @@ void ObjLoader::loadModel(object &Model, const char *filePath){
     }
     arq.close();
 
-    cout << "Quatidade de vertices: " << Model.vertices.size() << endl;
-    cout << "Quatidade de normais: " << Model.normais.size() << endl;
-    cout << "Quatidade de faces: " << Model.faces.size() << endl;
+    // cout << "Quatidade de vertices: " << Model.vertices.size() << endl;
+    // cout << "Quatidade de normais: " << Model.normais.size() << endl;
+    // cout << "Quatidade de faces: " << Model.faces.size() << endl;
 }
 
 
 
 normal ObjLoader::getNormal(string s){
-    float x, y, z;
-    sscanf(s.c_str(), "vn %f %f %f", &x, &y, &z);
+    double x, y, z;
+    sscanf(s.c_str(), "vn %lf %lf %lf", &x, &y, &z);
     normal n(x, y, z);
 
     return n;
 }
 
 vertice ObjLoader::getVertice(string s){
-    float x, y, z;
-    sscanf(s.c_str(),"v %f %f %f", &x, &y, &z);
+    double x, y, z;
+    sscanf(s.c_str(),"v %lf %lf %lf", &x, &y, &z);
     vertice v(x, y, z);
-
     return v;
 }
 

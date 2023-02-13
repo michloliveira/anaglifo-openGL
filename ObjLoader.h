@@ -21,8 +21,8 @@ struct face{
 };
 
 struct vertice{
-    float x, y, z;
-    vertice(float _x, float _y, float _z){
+    double x, y, z;
+    vertice(double _x, double _y, double _z){
         x = _x;
         y = _y;
         z = _z;
@@ -30,8 +30,8 @@ struct vertice{
 };
 
 struct normal{
-    float x, y, z;
-    normal(float _x, float _y, float _z){
+    double x, y, z;
+    normal(double _x, double _y, double _z){
         x = _x;
         y = _y;
         z = _z;
