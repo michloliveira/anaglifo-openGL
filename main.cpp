@@ -27,6 +27,7 @@ void init(){
   glEnable(GL_LIGHT0);
 
   glEnable(GL_DEPTH_TEST);
+  glShadeModel(GL_SMOOTH);
 }
 
 void set_light(){
