@@ -8,16 +8,22 @@ using namespace std;
 object bone;
 
 int X, Y;
+GLfloat paralax;
+GLfloat distancia;
+
 GLfloat eyeX, eyeY, eyeZ;
 
 void init(){
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0, 0, 0, 0);  
+
 
   // set camera position
   eyeX = 0;
   eyeY = 0;
   eyeZ = 12;
+
+  //set paralax
+  paralax = 0.02;
+  distancia = 0.00;
 
   // enable changing material color
   glEnable (GL_TEXTURE_2D);
@@ -64,20 +70,14 @@ void reshape(int w, int h){
   glLoadIdentity();
 }
 
-void draw(){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-
-    gluLookAt(eyeX,eyeY,eyeZ,0,0,0,0,1,0);
-
-    cout << " eyeX:" << eyeX << " eyeY:" << eyeY <<" eyeZ:" << eyeZ << endl;
-    cout << " RotateX:" << X << " RotateY:" << Y << endl;
+void drawR(){
+   // glTranslatef(-0.09f,0,0);
 
     glRotatef(X, 1,0,0);
     glRotatef(Y, 0,1,0);
-    set_light();
+    glTranslatef(-4.20f - distancia,-7.25,16);
 
-    glTranslatef(-4.20,-7.25,16);
+    glColorMask(1,0,0,0.75);
     glBegin(GL_TRIANGLES);
       for(int i = 0; i < bone.faces.size(); i++){
         //cout << bone.vertices[*bone.faces[i].v].x << bone.vertices[*bone.faces[i].v].y << bone.vertices[*bone.faces[i].v].z << endl;
@@ -91,6 +91,74 @@ void draw(){
         glVertex3f(bone.vertices[bone.faces[i].v[2] -1].x, bone.vertices[bone.faces[i].v[2] - 1].y, bone.vertices[bone.faces[i].v[2] - 1].z);
       }
     glEnd();
+   glTranslatef(4.20f,7.25,-16);
+}
+void drawL(){
+    //glTranslatef(0.09f,0,0);
+    glClearColor(1,0,0,1);
+    glRotatef(X, 1,0,0);
+    glRotatef(paralax, 0,1,0);
+   
+    glTranslatef(-4.20f + distancia,-7.25,16);
+
+    glColorMask(0,0,1,1);
+    glBegin(GL_TRIANGLES);
+      for(int i = 0; i < bone.faces.size(); i++){
+        //cout << bone.vertices[*bone.faces[i].v].x << bone.vertices[*bone.faces[i].v].y << bone.vertices[*bone.faces[i].v].z << endl;
+        glNormal3f(bone.normais[bone.faces[i].vn[0] -1].x ,bone.normais[bone.faces[i].vn[0] - 1].y, bone.normais[bone.faces[i].vn[0] - 1].z);
+        glVertex3f(bone.vertices[bone.faces[i].v[0] -1].x, bone.vertices[bone.faces[i].v[0] - 1].y, bone.vertices[bone.faces[i].v[0] -1].z);
+
+        glNormal3f(bone.normais[bone.faces[i].vn[1] -1].x ,bone.normais[bone.faces[i].vn[1] - 1].y, bone.normais[bone.faces[i].vn[1] - 1].z);
+        glVertex3f(bone.vertices[bone.faces[i].v[1] -1].x, bone.vertices[bone.faces[i].v[1] - 1].y, bone.vertices[bone.faces[i].v[1] -1].z);
+
+        glNormal3f(bone.normais[bone.faces[i].vn[2] -1].x ,bone.normais[bone.faces[i].vn[2] - 1].y, bone.normais[bone.faces[i].vn[2] - 1].z);
+        glVertex3f(bone.vertices[bone.faces[i].v[2] -1].x, bone.vertices[bone.faces[i].v[2] - 1].y, bone.vertices[bone.faces[i].v[2] - 1].z);
+      }
+    glEnd();
+    //glTranslatef(-0.09f,0,0);
+}
+
+void draw(){
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  glDepthMask (GL_TRUE);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+
+    //glClearColor(1,1,1,1);
+
+    gluLookAt(eyeX,eyeY,eyeZ,0,0,0,0,1,0);
+
+    cout << " eyeX:" << eyeX << " eyeY:" << eyeY <<" eyeZ:" << eyeZ << endl;
+    cout << " RotateX:" << X << " RotateY:" << Y << endl;
+
+
+    set_light();
+
+
+    glBegin(GL_LINES);
+      glVertex3f(0.5f,0,0);
+      glVertex3f(-0.5f,0,0);
+    glEnd();
+
+    glBegin(GL_LINES);
+      glVertex3f(0,1.0f,0);
+      glVertex3f(0,-1.0f,0);
+    glEnd();
+
+    glBegin(GL_LINES);
+      glVertex3f(0,0,0.5f);
+      glVertex3f(0,0,-0.5f);
+    glEnd();
+
+
+
+
+    drawR();
+
+    drawL();
+
 
     glutSwapBuffers();
 }
@@ -114,7 +182,18 @@ void specialKeys(int key, int x, int y){
     else if(key == GLUT_KEY_F2){ //zoom-in
 
         eyeZ -= 0.25;
-
+    }
+    else if(key == GLUT_KEY_F3){ //paralax-in
+        paralax += 0.05;
+    }
+    else if(key == GLUT_KEY_F4){ //paralax-out
+        paralax -= 0.05;
+    }
+    else if(key == GLUT_KEY_F5){ //paralax-in
+        distancia += 0.01;
+    }
+    else if(key == GLUT_KEY_F6){ //paralax-out
+        distancia -= 0.01;
     }
 
     //  Request display update
