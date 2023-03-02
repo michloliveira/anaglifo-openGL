@@ -22,8 +22,8 @@ void init(){
   eyeZ = 12;
 
   //set paralax
-  paralax = 0.02;
-  distancia = 0.00;
+  paralax = -10.48;
+  distancia = 0.05;
 
   // enable changing material color
   glEnable (GL_TEXTURE_2D);
@@ -73,7 +73,7 @@ void reshape(int w, int h){
 void drawR(){
    // glTranslatef(-0.09f,0,0);
 
-    glRotatef(X, 1,0,0);
+    //glRotatef(X, 1,0,0);
     glRotatef(Y, 0,1,0);
     glTranslatef(-4.20f - distancia,-7.25,16);
 
@@ -94,9 +94,6 @@ void drawR(){
    glTranslatef(4.20f,7.25,-16);
 }
 void drawL(){
-    //glTranslatef(0.09f,0,0);
-    glClearColor(1,0,0,1);
-    glRotatef(X, 1,0,0);
     glRotatef(paralax, 0,1,0);
    
     glTranslatef(-4.20f + distancia,-7.25,16);
@@ -132,35 +129,28 @@ void draw(){
 
     cout << " eyeX:" << eyeX << " eyeY:" << eyeY <<" eyeZ:" << eyeZ << endl;
     cout << " RotateX:" << X << " RotateY:" << Y << endl;
+    cout << "distancia: " << distancia << endl;
+    cout << "paralax: " << paralax << endl;
 
 
-    set_light();
-
-
-    glBegin(GL_LINES);
-      glVertex3f(0.5f,0,0);
-      glVertex3f(-0.5f,0,0);
-    glEnd();
-
-    glBegin(GL_LINES);
-      glVertex3f(0,1.0f,0);
-      glVertex3f(0,-1.0f,0);
-    glEnd();
-
-    glBegin(GL_LINES);
-      glVertex3f(0,0,0.5f);
-      glVertex3f(0,0,-0.5f);
-    glEnd();
-
-
-
+  //  set_light();
 
     drawR();
 
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE);
+
     drawL();
+
+    //glDisable(GL_BLEND);
+
+    //glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
     glutSwapBuffers();
+    glDisable(GL_BLEND);
 }
 
 void specialKeys(int key, int x, int y){
