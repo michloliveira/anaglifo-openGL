@@ -17,3 +17,7 @@ Run
 ```
 ./teste
 ```
+
+## Image
+
+![Image of a bone](out.png)
